@@ -1,0 +1,21 @@
+[package]
+name = "navi-wasm"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+wasm-bindgen = "0.2.84"
+js-sys = "0.3.91"
+nalgebra = { workspace = true }
+navi-rs = { path = "../navi-rs" }
+
+# Log `panics` into `console.error`.
+# Great for development, but not great for code size when deploying.
+console_error_panic_hook = { version = "0.1.7", optional = true }

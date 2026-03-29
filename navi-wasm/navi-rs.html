@@ -1,0 +1,79 @@
+<html>
+<head>
+<script type="module">
+
+import navi_init, { greet, multadd, vadd, vadd2, vadd3, cholesky, svd } from "./pkg/navi_wasm.js"
+await navi_init()
+
+let msdp = [
+    [1.0, 0.8, 0.5],
+    [0.8, 1.0, 0.4],
+    [0.5, 0.4, 1.0]];
+
+
+let msdp_flat = [].concat(...msdp);  // flatten the matrix
+let msdp_array = Float64Array.from(msdp_flat);
+
+console.log("msdp", msdp);
+console.log("msdp_flat", msdp_flat);
+console.log("msdp_array", msdp_array);
+
+console.log("cholesky(msdp_flat)", cholesky(msdp_flat));  // flat matrix
+console.log("cholesky(msdp_array)", cholesky(msdp_array));
+// console.log("cholesky([1, 2, 3])", cholesky([1, 2, 3]));
+
+console.log("svd(msdp)", svd(msdp)); // JSON.stringify(
+
+// greet()
+
+var z = multadd(1.0, 2.0);
+console.log("multadd", z);
+
+var v = [1.0, 5.0, 8.0];
+var fv = Float64Array.from([1.0, 5.0, 8.0, 11.0]);
+
+
+var z = vadd(v);
+console.log("vadd", z);
+
+var z = vadd([1.0, "f2.0b", 3.0]);
+console.log("vadd", z);
+
+var z = vadd(fv);
+console.log("vadd", z);
+
+
+/*
+vadd2(v);
+console.log("vadd2", v);
+
+vadd2(v);
+console.log("vadd2", fv);
+*/
+
+
+var z = vadd3(v);
+console.log("vadd3", z);
+
+var z = vadd3([1.0, "f2.0b", 3.0]);
+console.log("vadd3", z);
+
+var z = vadd3(fv);
+console.log("vadd3", z);
+
+
+</script>
+
+</head>
+
+<div id="no_wasm_warning">
+Host me on a webserver:
+<pre>npx serve</pre>
+or
+<pre>python -m http.server 8080</pre>
+then check the debugger console output.
+</div>
+
+<body>
+</body>
+</html>
