@@ -13,6 +13,7 @@ edition = "2024"
 version = "0.0.1"
 
 [workspace.dependencies]
-nalgebra = "0.33.2"
-recipes = { path = "recipes" }
+nalgebra = { version = "0.33.2" }
 navi-rs = { path = "navi-rs" }
+recipes = { path = "recipes" }
+serde = { version = "1.0" }

@@ -78,3 +78,15 @@ pub fn new_js_value(m: &DMatrix<f64>) -> JsValue {
     }
     js_res.into()
 }
+
+pub fn to_2d_vec(m: &DMatrix<f64>) -> Vec<Vec<f64>> {
+    let mut res = Vec::new();
+    for i in 0..m.nrows() {
+        let mut row = Vec::new();
+        for j in 0..m.ncols() {
+            row.push(m[(i, j)]);
+        }
+        res.push(row);
+    }
+    res
+}

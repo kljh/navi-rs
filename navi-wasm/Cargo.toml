@@ -14,7 +14,9 @@ default = ["console_error_panic_hook"]
 wasm-bindgen = "0.2.84"
 js-sys = "0.3.91"
 nalgebra = { workspace = true }
-navi-rs = { path = "../navi-rs" }
+navi-rs = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde-wasm-bindgen = "0.4"
 
 # Log `panics` into `console.error`.
 # Great for development, but not great for code size when deploying.

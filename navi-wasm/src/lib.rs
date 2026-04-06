@@ -13,12 +13,6 @@ pub fn greet() {
 }
 
 #[wasm_bindgen]
-pub fn multadd(a: f64, b: f64) -> f64 {
-    utils::set_panic_hook();
-    7.0 * a + 3.0 * b + navi_rs::abc()
-}
-
-#[wasm_bindgen]
 pub fn vadd(a: &[f64]) -> f64 {
     utils::set_panic_hook();
     let mut s = 0.0;
@@ -86,4 +80,41 @@ pub fn svd(m: &js_sys::Array<js_sys::Array<JsValue>>) -> Result<JsValue, String>
     let _ = js_sys::Reflect::set(&res, &"v_t".into(), &utils::new_js_value(&v_t));
 
     Ok(res.into())
+}
+
+#[derive(serde::Serialize, serde::Deserialize)]
+struct NaviFLow {
+    m: usize,
+    n: usize,
+    r: f64,
+}
+
+#[derive(serde::Serialize, serde::Deserialize)]
+struct NaviFLowResult {
+    grid: Vec<Vec<f64>>,
+}
+
+#[wasm_bindgen]
+pub fn potential_flow(js_args: JsValue) -> Result<JsValue, String>  {
+    let args = serde_wasm_bindgen::from_value::<NaviFLow>(js_args);
+    let prms = match args {
+        Ok(prms) => prms,
+        Err(err) => return Err(format!("Failed to parse input: {}", err)),
+    };
+
+    let c = ( prms.n/2 ) as f64;
+    let r2 = prms.r * prms.r;
+
+    // let geom = navi_rs::pflow::FreeFlow {};
+    let geom = navi_rs::pflow::Cylinder { center: nalgebra::Vector2::new(c, c), radius2: r2 };
+
+    let grid = navi_rs::pflow::finite_diff(prms.n, prms.m, &geom);
+    let data = utils::to_2d_vec(&grid);
+
+    let res = NaviFLowResult { grid: data };
+    let json = serde_wasm_bindgen::to_value(&res);
+    match json {
+        Ok(json) => Ok(json),
+        Err(e) => Err(format!("Failed to serialize to JSON: {}", e)),
+    }
 }
